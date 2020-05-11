@@ -1,13 +1,14 @@
 {
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "web": "expo start --web",
+    "expo": "expo start",
     "start": "react-native start",
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.10.0",
     "expo": "~37.0.3",
     "expo-updates": "~0.1.0",
     "react": "~16.9.0",
