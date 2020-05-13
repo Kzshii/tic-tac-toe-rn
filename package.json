@@ -5,7 +5,8 @@
     "ios": "react-native run-ios",
     "expo": "expo start",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "format": "prettier --write */**/*.{ts,tsx,js}"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.10.0",
@@ -26,6 +27,7 @@
     "@types/react-native": "~0.61.23",
     "babel-preset-expo": "~8.1.0",
     "jest-expo": "~37.0.0",
+    "prettier": "^2.0.5",
     "typescript": "~3.8.3"
   },
   "jest": {
