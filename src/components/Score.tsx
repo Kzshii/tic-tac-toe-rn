@@ -10,19 +10,21 @@ interface Props {
 export const Score: FC<Props> = ({ user, oponent }) => (
   <View style={styles.container}>
     <View style={styles.content}>
-      <Text style={styles.points}>{user.name}: { user.points }</Text>
+      <Text style={styles.points}>
+        {user.name}: {user.points}
+      </Text>
     </View>
     <View style={styles.content}>
-      <Text style={styles.points}>{ oponent.points }: Computador</Text>
+      <Text style={styles.points}>{oponent.points}: Computador</Text>
     </View>
   </View>
-)
+);
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   content: {
     padding: 24,
@@ -33,6 +35,6 @@ const styles = StyleSheet.create({
   },
   points: {
     fontSize: 16,
-    fontWeight: 'bold',
-  },
+    fontWeight: 'bold'
+  }
 });

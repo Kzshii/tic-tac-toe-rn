@@ -1,5 +1,11 @@
 import React, { FC, useState } from 'react';
-import { TextInput, SafeAreaView, StyleSheet, Button, Text } from 'react-native';
+import {
+  TextInput,
+  SafeAreaView,
+  StyleSheet,
+  Button,
+  Text
+} from 'react-native';
 
 interface Props {
   setUserName: (name: string) => void;
@@ -9,14 +15,18 @@ export const UserScreen: FC<Props> = ({ setUserName }) => {
   const [user, setUser] = useState<string>('');
   const onNameChange = (name: string) => {
     setUser(name);
-  }
+  };
   return (
-  <SafeAreaView style={styles.container}>
-    <Text style={styles.text}>Insira um nome</Text>
-    <TextInput style={styles.input} onChangeText={onNameChange} value={user} />
-    <Button onPress={() => setUserName(user)} title="Pronto" />
-  </SafeAreaView>
-  )
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.text}>Insira um nome</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={onNameChange}
+        value={user}
+      />
+      <Button onPress={() => setUserName(user)} title="Pronto" />
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -37,6 +47,6 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     borderRadius: 4,
     padding: 4,
-    marginBottom: 10,
+    marginBottom: 10
   }
 });

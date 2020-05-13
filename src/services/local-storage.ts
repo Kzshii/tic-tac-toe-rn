@@ -8,4 +8,4 @@ const localStorage = async () => {
   } catch (e) {
     // saving error
   }
-}
+};

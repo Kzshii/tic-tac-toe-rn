@@ -7,14 +7,14 @@ interface Props {
   disabled: boolean;
 }
 
-export const KeyInput: FC<Props> = ({ value, onPress, disabled }) => (
+export const Square: FC<Props> = ({ value, onPress, disabled }) => (
   <TouchableHighlight
-      style={styles.touchable}
-      activeOpacity={0.6}
-      underlayColor="transparent"
-      onPress={() => onPress(value)}
-      disabled={disabled}
-    >
+    style={styles.touchable}
+    activeOpacity={0.6}
+    underlayColor="transparent"
+    onPress={() => onPress(value)}
+    disabled={!!value || disabled}
+  >
     <View style={styles.content}>
       <Text style={styles.value}>{value}</Text>
     </View>
@@ -28,13 +28,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 100,
     width: 100,
-    borderWidth: 3,
+    borderWidth: 3
   },
   value: {
-    fontSize: 40,
+    fontSize: 40
   },
   touchable: {
     flexBasis: 0,
-    flexGrow: 1,
+    flexGrow: 1
   }
 });

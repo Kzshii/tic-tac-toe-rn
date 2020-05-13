@@ -28,14 +28,23 @@ export default function App() {
   //   return <GameScreen />;
   // }
   // return <UserScreen setUserName={onChangeUser} />;
+
   const [user, setUser] = useState<User>();
   const [oponent, setOponent] = useState<User>(new User({ name: 'comp' }));
+  // const [players, setPlayers] = useState<{player: User, oponent: User}>({ player: new User(), oponent: new User({ name: 'comp' })  })
 
   const onChangeUser = (name: string) => {
+    // setPlayers({ ...players, player: new User({ name: name }) })
     setUser(new User({ name: name }));
   };
   if (!!user) {
-    return <GameScreen setWinner={() => console.log('calma')} user={user} oponent={oponent}/>;
+    return (
+      <GameScreen
+        setWinner={() => console.log('calma')}
+        user={user}
+        oponent={oponent}
+      />
+    );
   }
   return <UserScreen setUserName={onChangeUser} />;
-};
+}
