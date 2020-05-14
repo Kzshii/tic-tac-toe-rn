@@ -1,69 +1,86 @@
 import { useState, useEffect } from 'react';
 import { calculateWinner } from '../utils/calculateWinner';
+import { api } from '../services/api';
+import { OpponentLevel, Turn } from '../types';
+import { State } from '../types/state';
 
 interface GameState {
   turn: Turn;
-  gameCount: number;
+  squaresFilled: number;
   rows: string[];
 }
 
 interface ReactHookState {
   finished: boolean;
+  loading: boolean;
+  hasError: boolean;
   setGame: (game: GameState) => void;
+  setFinished: (value: boolean) => void;
+  setState: (state: State) => void;
   game: GameState;
-}
-
-export enum Turn {
-  player,
-  opponnent
-}
-
-export enum OpponentLvl {
-  Easy,
-  Medium,
-  Hard,
-  Expert
+  state: State;
 }
 
 export const initialState = {
-  turn: Turn.player,
-  gameCount: 0,
-  rows: ['', '', '', '', '', '', '', '', '']
+  turn: Turn.opponnent,
+  squaresFilled: 0,
+  rows: [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
 };
 
-export const useGame = (level: OpponentLvl): ReactHookState => {
+export const useGame = (level: OpponentLevel): ReactHookState => {
   const [game, setGame] = useState<GameState>(initialState);
   const [finished, setFinished] = useState(false);
+  const [state, setState] = useState<State>(State.Playing);
+  const [hasError, setHasError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const movementLevel = (level: OpponentLvl) => {
-    switch (level) {
-      case OpponentLvl.Easy:
-        const clonedRows = [...game.rows];
-        const firstAvailableSquare = clonedRows.findIndex((x) => x === '');
-        clonedRows.splice(firstAvailableSquare, 1, 'O');
-        setGame({
-          turn: Turn.player,
-          gameCount: game.gameCount + 1,
-          rows: clonedRows
-        });
-        break;
+  const movement = async (level: OpponentLevel) => {
+    try {
+      setLoading(true);
+      const rows = game.rows.reduce(
+        (a, c) => (c ? (a = a + c) : (a = a + ' ')),
+        ''
+      );
+      const { board } = await api.play({ board: rows, level: level });
+      const newRow = board.split('');
 
-      default:
-        break;
+      setGame({
+        rows: newRow,
+        squaresFilled: game.squaresFilled + 1,
+        turn: Turn.opponnent
+      });
+
+    } catch (error) {
+      setHasError(true);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (calculateWinner(game.rows)) {
+    if (calculateWinner(game.rows) && game.squaresFilled < 9) {
+      setState(State.Winner);
       setFinished(true);
-    } else if (!finished && game.turn === Turn.opponnent) {
-      movementLevel(level);
+    } else if (
+      !finished &&
+      game.turn === Turn.player &&
+      game.squaresFilled < 9
+    ) {
+      movement(level);
+    } else if (state === State.Playing && game.squaresFilled === 9) {
+      setState(State.Draw);
+      setFinished(true);
     }
-
-    return () => {
-      setFinished(false);
-    };
   }, [game]);
 
-  return { finished, game, setGame };
+  return {
+    finished,
+    game,
+    loading,
+    state,
+    hasError,
+    setGame,
+    setFinished,
+    setState
+  };
 };

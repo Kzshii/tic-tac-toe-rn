@@ -1,3 +1,5 @@
+import { emptyString } from './emptyString';
+
 const rules = [
   [0, 1, 2],
   [3, 4, 5],
@@ -12,7 +14,7 @@ const rules = [
 export const calculateWinner = (game: string[]): boolean => {
   for (let i = 0; i < rules.length; i++) {
     const [a, b, c] = rules[i];
-    if (game[a] !== '' && game[a] === game[b] && game[b] === game[c]) {
+    if (!emptyString(game[a]) && game[a] === game[b] && game[b] === game[c]) {
       return true;
     }
   }

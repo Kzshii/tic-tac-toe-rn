@@ -4,37 +4,45 @@ import { User } from '../types';
 
 interface Props {
   user: User;
-  oponent: User;
+  opponent: User;
 }
 
-export const Score: FC<Props> = ({ user, oponent }) => (
+export const Score: FC<Props> = ({ user, opponent }) => (
   <View style={styles.container}>
     <View style={styles.content}>
-      <Text style={styles.points}>
-        {user.name}: {user.points}
-      </Text>
+      <Text style={styles.name}>{user.name}</Text>
+      <Text style={styles.points}>{user.points}</Text>
     </View>
     <View style={styles.content}>
-      <Text style={styles.points}>{oponent.points}: Computador</Text>
+      <Text style={styles.name}>Computador</Text>
+      <Text style={styles.points}>{opponent.points}</Text>
     </View>
   </View>
 );
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
+    padding: 32,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
   content: {
-    padding: 24,
-    justifyContent: 'space-between',
+    flexDirection: 'column',
+    padding: 12,
     alignItems: 'center',
-    borderWidth: 2,
-    width: '50%'
+    borderRadius: 8,
+    width: '40%',
+    backgroundColor: '#cdab81'
+  },
+  name: {
+    fontSize: 16,
+    color: '#fff'
   },
   points: {
-    fontSize: 16,
-    fontWeight: 'bold'
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#fff'
   }
 });

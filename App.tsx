@@ -1,50 +1,48 @@
 import React, { useState } from 'react';
 import { UserScreen, GameScreen } from './src/pages';
 import { User } from './src/types/user';
-import { SafeAreaView, View, Text } from 'react-native';
+import { OpponentLevel, Turn } from './src/types';
 
 export default function App() {
-  // const [users, setUsers] = useState<User[]>([]);
-  // const [userSelected, setUserSelected] = useState<User|undefined>();
+  const [user, setUser] = useState<User>(new User());
+  const [level, setLevel] = useState<{
+    level: OpponentLevel;
+    selected: boolean;
+  }>({ level: OpponentLevel.Medium, selected: true });
+  const [opponent, setOpponent] = useState<User>(
+    new User({ name: 'Computador' })
+  );
 
-  // const onChangeUser = (name: string) => {
-  //   const existentUser = users.findIndex(user => user.name, name);
-  //   if (existentUser !== -1) {
-  //     setUserSelected(users[existentUser]);
-  //   } else {
-  //     setUsers([...users, new User({ name: name })]);
-  //     setUserSelected(new User({ name: name }));
-  //   }
-  // };
-  // console.log(users, userSelected);
-  // if (users.length > 0 && !userSelected) {
-  //   <SafeAreaView>
-  //     <View>
-  //       <Text>Selecione o jogador: </Text>
-  //     </View>
-  //   </SafeAreaView>
-  // }
-  // else if (userSelected && userSelected.name !== '') {
-  //   return <GameScreen />;
-  // }
-  // return <UserScreen setUserName={onChangeUser} />;
-
-  const [user, setUser] = useState<User>();
-  const [oponent, setOponent] = useState<User>(new User({ name: 'comp' }));
-  // const [players, setPlayers] = useState<{player: User, oponent: User}>({ player: new User(), oponent: new User({ name: 'comp' })  })
-
-  const onChangeUser = (name: string) => {
-    // setPlayers({ ...players, player: new User({ name: name }) })
-    setUser(new User({ name: name }));
+  const onHandleWinner = (player: Turn) => {
+    if (player === Turn.opponnent) {
+      setOpponent({ ...opponent, points: opponent.points + 1 });
+    } else {
+      setUser({ ...user, points: user.points + 1 });
+    }
   };
-  if (!!user) {
+
+  const resetLevel = () => {
+    setLevel({ level: level.level, selected: false });
+    setOpponent(new User({ name: 'Computador' }))
+  };
+
+  const onFinish = (userName: string, level: OpponentLevel) => {
+    setLevel({ level: level, selected: true });
+    setUser(new User({ name: userName }));
+  };
+
+  if (!!user.name && level.selected) {
     return (
       <GameScreen
-        setWinner={() => console.log('calma')}
+        setWinner={onHandleWinner}
+        onChangeLevel={resetLevel}
         user={user}
-        oponent={oponent}
+        level={level.level}
+        opponent={opponent}
       />
     );
   }
-  return <UserScreen setUserName={onChangeUser} />;
+  return (
+    <UserScreen userName={user.name} onFinish={onFinish} level={level.level} />
+  );
 }

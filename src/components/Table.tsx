@@ -4,39 +4,32 @@ import { Square } from './Square';
 
 interface Props {
   game: string[];
-  finished: boolean;
+  disabled: boolean;
   onSquareClick: (value: string, key: number) => void;
-  onRestart: () => void;
 }
 
-export const Table: FC<Props> = ({
-  game,
-  finished,
-  onSquareClick,
-  onRestart
-}) => (
-  <SafeAreaView style={styles.container}>
-    <FlatList
-      data={game}
-      keyExtractor={(_, idx) => idx.toString()}
-      numColumns={3}
-      renderItem={(key) => (
-        <View style={[styles.input]}>
-          <Square
-            disabled={finished}
-            onPress={(value) => onSquareClick(value, key.index)}
-            value={key.item}
-          />
-        </View>
-      )}
-    />
-    <Button onPress={onRestart} title="Começar de novo" />
-  </SafeAreaView>
+export const Table: FC<Props> = ({ game, disabled, onSquareClick }) => (
+  <FlatList
+    data={game}
+    style={styles.content}
+    scrollEnabled={false}
+    keyExtractor={(_, idx) => idx.toString()}
+    numColumns={3}
+    renderItem={(key) => (
+      <View>
+        <Square
+          style={key.item === 'X' ? { color: 'red' } : { color: 'green' }}
+          disabled={disabled}
+          onPress={(value) => onSquareClick(value, key.index)}
+          value={key.item}
+        />
+      </View>
+    )}
+  />
 );
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  input: {}
+  content: {
+    marginTop: 100
+  }
 });
