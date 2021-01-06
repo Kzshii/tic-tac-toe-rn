@@ -9,7 +9,7 @@
     "format": "prettier --write */**/*.{ts,tsx,js}"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "expo": "~37.0.3",
     "expo-updates": "~0.1.0",
     "react": "~16.9.0",
